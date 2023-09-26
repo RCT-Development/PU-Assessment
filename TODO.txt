@@ -1,0 +1,9 @@
+finish frontend
+Do removing and adding of users/permissions
+
+
+Add generic entities and template update/create Done
+
+Add unit tests
+
+Fix created date empty done

@@ -1,0 +1,38 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "User Management Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Users (@Model.UsersCount)</h1>
+    <div class="list row">
+        
+            <ul class="list-group">
+                @foreach(var user in Model.Users)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @user.FirstName @user.LastName 
+                        <div>
+                            <a class="btn btn-primary" asp-action="Update" asp-route-id="@user.Id">Details</a>
+                            <a class="btn btn-danger delete-button" data-id="@user.Id">X</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        <a class="btn btn-success" asp-action="Add">Add</a>
+        
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".delete-button").click(function () {
+                var id = $(this).data("id");
+                $.post("/User/Remove", { id: id }, function () {
+                    window.location.reload();
+                });
+            });
+        });
+    </script>
+}

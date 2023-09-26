@@ -1,0 +1,70 @@
+﻿@using PU.MVCWebApp.Models.GroupViewModels;
+@model GroupPermissionsViewModel
+@{
+    ViewData["Title"] = "Group Permissions Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Permissions</h1>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <h3 class="display-8">In Group</h3>
+        <div class="list">
+            <ul class="list-group">
+                @foreach (var permission in Model.GroupPermissions)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @permission.Name
+                        <div>
+                            <button class="btn btn-danger remove-button" data-permission-id="@permission.Id" data-group-id="@Model.GroupId">Remove</button>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h3 class="display-8">Available</h3>
+        <div class="list">
+            <ul class="list-group">
+                @foreach (var permission in Model.AvailablePermissions)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @permission.Name
+                        <div>
+                            <button class="btn btn-success add-button" data-permission-id="@permission.Id" data-group-id="@Model.GroupId">Add</button>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".remove-button").click(function () {
+                var permissionId = $(this).data("permission-id");
+                var groupId = $(this).data("group-id");
+                $.post("/Group/RemovePermission", { permissionId: permissionId, groupId: groupId }, function () {
+                    window.location.reload();
+                });
+            });
+
+            $(".add-button").click(function () {
+                var permissionId = $(this).data("permission-id");
+                var groupId = $(this).data("group-id");
+                $.post("/Group/AddPermission", { permissionId: permissionId, groupId: groupId }, function () {
+                    window.location.reload();
+                });
+            });
+        });
+    </script>
+}
+
