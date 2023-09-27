@@ -20,38 +20,38 @@ namespace PU.WebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IEnumerable<Permission>> Get()
+        public async Task<IEnumerable<Permission>> GetAllAsync()
         {
-            return await _permissionService.GetPermissions();
+            return await _permissionService.GetAllAsync();
         }
 
         [HttpGet("{permissionId}")]
-        public async Task<Permission> Get(Guid permissionId)
+        public async Task<Permission> GetAsync(Guid permissionId)
         {
-            return await _permissionService.GetPermission(permissionId);
+            return await _permissionService.GetAsync(permissionId);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PermissionRequest model)
+        public async Task<IActionResult> CreateAsync([FromBody] PermissionRequest model)
         {
             var permission = _mapper.Map<Permission>(model);
-            await _permissionService.CreatePermission(permission);
+            await _permissionService.CreateAsync(permission);
             return Ok();
         }
 
         [HttpPut("{permissionId}")]
-        public async Task<IActionResult> Put(Guid permissionId, [FromBody] PermissionRequest model)
+        public async Task<IActionResult> UpdateAsync(Guid permissionId, [FromBody] PermissionRequest model)
         {
             var permission = _mapper.Map<Permission>(model);
             permission.Id = permissionId;
-            await _permissionService.UpdatePermission(permission);
+            await _permissionService.UpdateAsync(permission);
             return Ok();
         }
 
         [HttpDelete("{permissionId}")]
-        public async Task<IActionResult> Delete(Guid permissionId)
+        public async Task<IActionResult> DeleteAsync(Guid permissionId)
         {
-            await _permissionService.DeletePermission(permissionId);
+            await _permissionService.DeleteAsync(permissionId);
             return Ok();
         }
     }

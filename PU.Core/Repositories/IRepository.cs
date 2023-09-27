@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace PU.Core.Repositories
+﻿namespace PU.Core.Repositories
 {
     public interface IRepository<T>
     {

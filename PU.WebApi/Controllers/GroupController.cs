@@ -21,9 +21,9 @@ namespace PU.WebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IEnumerable<Group>> Get()
+        public async Task<IEnumerable<Group>> GetAllAsync()
         {
-            return await _groupService.GetGroups();
+            return await _groupService.GetAllAsync();
         }
 
         [HttpGet("UserCount")]
@@ -33,72 +33,72 @@ namespace PU.WebApi.Controllers
         }
 
         [HttpGet("{groupId}")]
-        public async Task<Group> Get(Guid groupId)
+        public async Task<Group> GetAsync(Guid groupId)
         {
-            return await _groupService.GetGroup(groupId);
+            return await _groupService.GetAsync(groupId);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] GroupRequest model)
+        public async Task<IActionResult> CreateAsync([FromBody] GroupRequest model)
         {
             var group = _mapper.Map<Group>(model);
-            await _groupService.CreateGroup(group);
+            await _groupService.CreateAsync(group);
             return Ok();
         }
 
         [HttpPut("{groupId}")]
-        public async Task<IActionResult> Put(Guid groupId, [FromBody] GroupRequest model)
+        public async Task<IActionResult> UpdateAsync(Guid groupId, [FromBody] GroupRequest model)
         {
             var group = _mapper.Map<Group>(model);
             group.Id = groupId;
-            await _groupService.UpdateGroup(group);
+            await _groupService.UpdateAsync(group);
             return Ok();
         }
 
         [HttpDelete("{groupId}")]
-        public async Task<IActionResult> Delete(Guid groupId)
+        public async Task<IActionResult> DeleteAsync(Guid groupId)
         {
-            await _groupService.DeleteGroup(groupId);
+            await _groupService.DeleteAsync(groupId);
             return Ok();
         }
 
         [HttpGet("{groupId}/Users")]
-        public async Task<IEnumerable<User>> GetGroupUsers(Guid groupId)
+        public async Task<IEnumerable<User>> GetGroupUsersAsync(Guid groupId)
         {
-            return await _groupService.GetGroupUsers(groupId);
+            return await _groupService.GetGroupUsersAsync(groupId);
         }
 
         [HttpPost("{groupId}/Users/{userId}")]
-        public async Task<IActionResult> AddGroupUser(Guid groupId, Guid userId)
+        public async Task<IActionResult> AddGroupUserAsync(Guid groupId, Guid userId)
         {
-            await _groupService.AddGroupUser(groupId, userId);
+            await _groupService.AddGroupUserAsync(groupId, userId);
             return Ok();
         }
 
         [HttpDelete("{groupId}/Users/{userId}")]
-        public async Task<IActionResult> RemoveGroupUser(Guid groupId, Guid userId)
+        public async Task<IActionResult> RemoveGroupUserAsync(Guid groupId, Guid userId)
         {
-            await _groupService.RemoveGroupUser(groupId,userId);
+            await _groupService.RemoveGroupUserAsync(groupId,userId);
             return Ok();
         }
 
         [HttpGet("{groupId}/Permissions")]
-        public async Task<IEnumerable<Permission>> GetGroupPermissions(Guid groupId)
+        public async Task<IEnumerable<Permission>> GetGroupPermissionsAsync(Guid groupId)
         {
-            return await _groupService.GetGroupPermissions(groupId);
+            return await _groupService.GetGroupPermissionsAsync(groupId);
         }
 
         [HttpPost("{groupId}/Permissions/{permissionId}")]
-        public async Task<IActionResult> AddGroupPermission(Guid groupId, Guid permissionId)
+        public async Task<IActionResult> AddGroupPermissionAsync(Guid groupId, Guid permissionId)
         {
-            await _groupService.AddGroupPermission(groupId, permissionId);
+            await _groupService.AddGroupPermissionAsync(groupId, permissionId);
             return Ok();
         }
 
         [HttpDelete("{groupId}/Permissions/{permissionId}")]
-        public async Task<IActionResult> RemoveGroupPermission(Guid groupId, Guid permissionId)
+        public async Task<IActionResult> RemoveGroupPermissionAsync(Guid groupId, Guid permissionId)
         {
-            await _groupService.RemoveGroupPermission(groupId,permissionId);
+            await _groupService.RemoveGroupPermissionAsync(groupId,permissionId);
             return Ok();
         }
     }

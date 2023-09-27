@@ -24,7 +24,7 @@ namespace PU.Services.UnitTests.Services
         {
             var group = new Group();
 
-            await _sut.CreateGroup(group);
+            await _sut.CreateAsync(group);
 
             _groupRepositoryMock.Verify(repo => repo.CreateAsync(group), Times.Once);
         }
@@ -36,7 +36,7 @@ namespace PU.Services.UnitTests.Services
             var existingGroup = new Group();
             _groupRepositoryMock.Setup(repo => repo.GetAsync(groupId)).ReturnsAsync(existingGroup);
 
-            await _sut.DeleteGroup(groupId);
+            await _sut.DeleteAsync(groupId);
 
             _groupRepositoryMock.Verify(repo => repo.DeleteAsync(existingGroup), Times.Once);
         }
@@ -47,7 +47,7 @@ namespace PU.Services.UnitTests.Services
             var groupId = Guid.NewGuid();
             _groupRepositoryMock.Setup(repo => repo.GetAsync(groupId)).ReturnsAsync((Group)null);
 
-            Assert.ThrowsAsync<NotFoundException>(() => _sut.DeleteGroup(groupId));
+            Assert.ThrowsAsync<NotFoundException>(() => _sut.DeleteAsync(groupId));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace PU.Services.UnitTests.Services
             var group = new Group { Id = groupId };
             _groupRepositoryMock.Setup(repo => repo.GetAsync(groupId)).ReturnsAsync(group);
 
-            var result = await _sut.GetGroup(groupId);
+            var result = await _sut.GetAsync(groupId);
 
             Assert.That(result.Id, Is.EqualTo(groupId));
         }
@@ -68,7 +68,7 @@ namespace PU.Services.UnitTests.Services
             var groups = new List<Group> { new Group(), new Group() };
             _groupRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(groups);
 
-            var result = await _sut.GetGroups();
+            var result = await _sut.GetAllAsync();
 
             Assert.That(result.Count(), Is.EqualTo(groups.Count));
         }
@@ -105,7 +105,7 @@ namespace PU.Services.UnitTests.Services
             var users = new List<User> { new User(), new User() };
             _groupRepositoryMock.Setup(repo => repo.GetGroupUsers(groupId)).ReturnsAsync(users);
 
-            var result = await _sut.GetGroupUsers(groupId);
+            var result = await _sut.GetGroupUsersAsync(groupId);
 
             Assert.That(result.Count(), Is.EqualTo(users.Count));
         }
@@ -116,7 +116,7 @@ namespace PU.Services.UnitTests.Services
             var groupId = Guid.NewGuid();
             var userId = Guid.NewGuid();
 
-            await _sut.AddGroupUser(groupId, userId);
+            await _sut.AddGroupUserAsync(groupId, userId);
 
             _groupRepositoryMock.Verify(repo => repo.AddGroupUser(groupId, userId), Times.Once);
         }
@@ -127,7 +127,7 @@ namespace PU.Services.UnitTests.Services
             var groupId = Guid.NewGuid();
             var userId = Guid.NewGuid();
 
-            await _sut.RemoveGroupUser(groupId, userId);
+            await _sut.RemoveGroupUserAsync(groupId, userId);
 
             _groupRepositoryMock.Verify(repo => repo.RemoveGroupUser(groupId, userId), Times.Once);
         }
@@ -141,7 +141,7 @@ namespace PU.Services.UnitTests.Services
             _groupRepositoryMock.Setup(repo => repo.GetGroupPermissions(groupId)).ReturnsAsync(permissions);
 
             // Act
-            var result = await _sut.GetGroupPermissions(groupId);
+            var result = await _sut.GetGroupPermissionsAsync(groupId);
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(permissions.Count));
@@ -153,7 +153,7 @@ namespace PU.Services.UnitTests.Services
             var groupId = Guid.NewGuid();
             var permissionId = Guid.NewGuid();
 
-            await _sut.AddGroupPermission(groupId, permissionId);
+            await _sut.AddGroupPermissionAsync(groupId, permissionId);
 
             _groupRepositoryMock.Verify(repo => repo.AddGroupPermission(groupId, permissionId), Times.Once);
         }
@@ -164,7 +164,7 @@ namespace PU.Services.UnitTests.Services
             var groupId = Guid.NewGuid();
             var permissionId = Guid.NewGuid();
 
-            await _sut.RemoveGroupPermission(groupId, permissionId);
+            await _sut.RemoveGroupPermissionAsync(groupId, permissionId);
 
             _groupRepositoryMock.Verify(repo => repo.RemoveGroupPermission(groupId, permissionId), Times.Once);
         }

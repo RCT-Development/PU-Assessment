@@ -20,48 +20,48 @@ namespace PU.WebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _userService.GetUsers();
+            return await _userService.GetAllAsync();
         }
 
         [HttpGet("{userId}")]
-        public async Task<User> Get(Guid userId)
+        public async Task<User> GetAsync(Guid userId)
         {
-            return await _userService.GetUser(userId);
+            return await _userService.GetAsync(userId);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] UserRequest model)
+        public async Task<IActionResult> CreateAsync([FromBody] UserRequest model)
         {
             var user = _mapper.Map<User>(model);
 
-            await _userService.CreateUser(user);
+            await _userService.CreateAsync(user);
             return Ok();
         }
 
         [HttpPut("{userId}")]
-        public async Task<IActionResult> Put(Guid userId, [FromBody] UserRequest model)
+        public async Task<IActionResult> UpdateAsync(Guid userId, [FromBody] UserRequest model)
         {
             var user = _mapper.Map<User>(model);
             user.Id = userId;
 
-            await _userService.UpdateUser(user);
+            await _userService.UpdateAsync(user);
             return Ok();
         }
 
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> Delete(Guid userId)
+        public async Task<IActionResult> DeleteAsync(Guid userId)
         {
-            await _userService.DeleteUser(userId);
+            await _userService.DeleteAsync(userId);
             return Ok();
         }
 
         [HttpGet("Count")]
-        public async Task<int> GetUserCount()
+        public async Task<int> GetUserCountAsync()
         {
-            var users = await _userService.GetUsers();
+            var users = await _userService.GetAllAsync();
             return users.ToList().Count;
         }
     }

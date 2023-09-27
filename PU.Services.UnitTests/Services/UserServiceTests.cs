@@ -23,7 +23,7 @@ namespace PU.Services.UnitTests.Services
         {
             var user = new User();
 
-            await _sut.CreateUser(user);
+            await _sut.CreateAsync(user);
 
             _userRepositoryMock.Verify(repo => repo.CreateAsync(user), Times.Once);
         }
@@ -35,7 +35,7 @@ namespace PU.Services.UnitTests.Services
             var existingUser = new User();
             _userRepositoryMock.Setup(repo => repo.GetAsync(userId)).ReturnsAsync(existingUser);
 
-            await _sut.DeleteUser(userId);
+            await _sut.DeleteAsync(userId);
 
             _userRepositoryMock.Verify(repo => repo.DeleteAsync(existingUser), Times.Once);
         }
@@ -46,7 +46,7 @@ namespace PU.Services.UnitTests.Services
             var UserId = Guid.NewGuid();
             _userRepositoryMock.Setup(repo => repo.GetAsync(UserId)).ReturnsAsync((User)null);
 
-            Assert.ThrowsAsync<NotFoundException>(() => _sut.DeleteUser(UserId));
+            Assert.ThrowsAsync<NotFoundException>(() => _sut.DeleteAsync(UserId));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace PU.Services.UnitTests.Services
             var User = new User { Id = UserId };
             _userRepositoryMock.Setup(repo => repo.GetAsync(UserId)).ReturnsAsync(User);
 
-            var result = await _sut.GetUser(UserId);
+            var result = await _sut.GetAsync(UserId);
 
             Assert.That(result.Id, Is.EqualTo(UserId));
         }
@@ -67,7 +67,7 @@ namespace PU.Services.UnitTests.Services
             var users = new List<User> { new User(), new User() };
             _userRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
-            var result = await _sut.GetUsers();
+            var result = await _sut.GetAllAsync();
 
             Assert.That(result.Count(), Is.EqualTo(users.Count));
         }
@@ -77,7 +77,7 @@ namespace PU.Services.UnitTests.Services
         {
             var user = new User();
 
-            await _sut.UpdateUser(user);
+            await _sut.UpdateAsync(user);
 
             _userRepositoryMock.Verify(repo => repo.UpdateAsync(user), Times.Once);
         }

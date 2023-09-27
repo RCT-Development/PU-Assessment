@@ -23,7 +23,7 @@ namespace PU.Services.UnitTests.Services
         {
             var permission = new Permission();
 
-            await _sut.CreatePermission(permission);
+            await _sut.CreateAsync(permission);
 
             _permissionRepositoryMock.Verify(repo => repo.CreateAsync(permission), Times.Once);
         }
@@ -35,7 +35,7 @@ namespace PU.Services.UnitTests.Services
             var existingPermission = new Permission();
             _permissionRepositoryMock.Setup(repo => repo.GetAsync(permissionId)).ReturnsAsync(existingPermission);
 
-            await _sut.DeletePermission(permissionId);
+            await _sut.DeleteAsync(permissionId);
 
             _permissionRepositoryMock.Verify(repo => repo.DeleteAsync(existingPermission), Times.Once);
         }
@@ -46,7 +46,7 @@ namespace PU.Services.UnitTests.Services
             var PermissionId = Guid.NewGuid();
             _permissionRepositoryMock.Setup(repo => repo.GetAsync(PermissionId)).ReturnsAsync((Permission)null);
 
-            Assert.ThrowsAsync<NotFoundException>(() => _sut.DeletePermission(PermissionId));
+            Assert.ThrowsAsync<NotFoundException>(() => _sut.DeleteAsync(PermissionId));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace PU.Services.UnitTests.Services
             var Permission = new Permission { Id = PermissionId };
             _permissionRepositoryMock.Setup(repo => repo.GetAsync(PermissionId)).ReturnsAsync(Permission);
 
-            var result = await _sut.GetPermission(PermissionId);
+            var result = await _sut.GetAsync(PermissionId);
 
             Assert.That(result.Id, Is.EqualTo(PermissionId));
         }
@@ -67,7 +67,7 @@ namespace PU.Services.UnitTests.Services
             var permissions = new List<Permission> { new Permission(), new Permission() };
             _permissionRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(permissions);
 
-            var result = await _sut.GetPermissions();
+            var result = await _sut.GetAllAsync();
 
             Assert.That(result.Count(), Is.EqualTo(permissions.Count));
         }
@@ -77,7 +77,7 @@ namespace PU.Services.UnitTests.Services
         {
             var permission = new Permission();
 
-            await _sut.UpdatePermission(permission);
+            await _sut.UpdateAsync(permission);
 
             _permissionRepositoryMock.Verify(repo => repo.UpdateAsync(permission), Times.Once);
         }
