@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PU.Core.DTO.Request;
 using PU.Core.DTO.Response;
 using PU.Core.Exceptions;
 using PU.Core.Models;
@@ -62,7 +61,6 @@ namespace PU.DataAccess.Repositories
 
             Context.UserGroup.Remove(userGroup);
             await Context.SaveChangesAsync();
-
         }
         public async Task<IEnumerable<Permission>> GetGroupPermissions(Guid groupId)
         {

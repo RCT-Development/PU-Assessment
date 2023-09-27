@@ -9,7 +9,6 @@ namespace PU.DataAccess.Entities
         [Required]
         public string Description { get; set; }
 
-        //Navigation Properties
-        public ICollection<GroupPermission> GroupPermissions { get; set; }
+        public virtual ICollection<GroupPermission> GroupPermissions { get; set; }
     }
 }

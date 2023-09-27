@@ -5,7 +5,7 @@ using PU.Core.Services.Contracts;
 
 namespace PU.Services
 {
-    public class ServiceBase<Model> : IBaseService<Model> where Model : ModelBase
+    public abstract class ServiceBase<Model> : IBaseService<Model> where Model : ModelBase
     {
         private readonly IRepository<Model> _repository;
 

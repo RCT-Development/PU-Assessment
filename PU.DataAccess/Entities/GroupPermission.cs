@@ -7,7 +7,7 @@
         public Guid GroupId { get; set; }
         public Guid PermissionId { get; set; }
 
-        public Group Group { get; set; }
-        public Permission Permission { get; set; }
+        public virtual Group Group { get; set; }
+        public virtual Permission Permission { get; set; }
     }
 }

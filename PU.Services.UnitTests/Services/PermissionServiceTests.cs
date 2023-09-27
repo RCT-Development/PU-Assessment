@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using AutoFixture;
+using Moq;
 using PU.Core.Exceptions;
 using PU.Core.Models;
 using PU.Core.Repositories;
@@ -10,18 +11,20 @@ namespace PU.Services.UnitTests.Services
     {
         private PermissionService _sut;
         private Mock<IPermissionRepository> _permissionRepositoryMock;
+        private Fixture _fixture;
 
         [SetUp]
         public void Setup()
         {
             _permissionRepositoryMock = new Mock<IPermissionRepository>();
             _sut = new PermissionService(_permissionRepositoryMock.Object);
+            _fixture = new Fixture();
         }
 
         [Test]
         public async Task CreatePermission_ValidInput_CallsRepositoryCreateAsync()
         {
-            var permission = new Permission();
+            var permission = _fixture.Create<Permission>();
 
             await _sut.CreateAsync(permission);
 
@@ -32,7 +35,7 @@ namespace PU.Services.UnitTests.Services
         public async Task DeletePermission_ExistingPermission_CallsRepositoryDeleteAsync()
         {
             var permissionId = Guid.NewGuid();
-            var existingPermission = new Permission();
+            var existingPermission = _fixture.Create<Permission>();
             _permissionRepositoryMock.Setup(repo => repo.GetAsync(permissionId)).ReturnsAsync(existingPermission);
 
             await _sut.DeleteAsync(permissionId);
@@ -53,7 +56,7 @@ namespace PU.Services.UnitTests.Services
         public async Task GetPermission_ReturnsPermission()
         {
             var PermissionId = Guid.NewGuid();
-            var Permission = new Permission { Id = PermissionId };
+            var Permission = _fixture.Build<Permission>().With(x => x.Id, PermissionId).Create();
             _permissionRepositoryMock.Setup(repo => repo.GetAsync(PermissionId)).ReturnsAsync(Permission);
 
             var result = await _sut.GetAsync(PermissionId);
@@ -64,18 +67,18 @@ namespace PU.Services.UnitTests.Services
         [Test]
         public async Task GetPermissions_ReturnsListOfPermissions()
         {
-            var permissions = new List<Permission> { new Permission(), new Permission() };
+            var permissions = _fixture.CreateMany<Permission>();
             _permissionRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(permissions);
 
             var result = await _sut.GetAllAsync();
 
-            Assert.That(result.Count(), Is.EqualTo(permissions.Count));
+            Assert.That(result.Count(), Is.EqualTo(permissions.Count()));
         }
 
         [Test]
         public async Task UpdatePermission_CallsRepositoryUpdateAsync()
         {
-            var permission = new Permission();
+            var permission = _fixture.Create<Permission>();
 
             await _sut.UpdateAsync(permission);
 

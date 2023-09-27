@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
@@ -20,8 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PU.Core\PU.Core.csproj" />
-    <ProjectReference Include="..\PU.Services\PU.Services.csproj" />
+    <ProjectReference Include="..\PU.DataAccess\PU.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

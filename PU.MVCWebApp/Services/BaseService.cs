@@ -4,7 +4,7 @@ using PU.MVCWebApp.Services.Contracts;
 
 namespace PU.MVCWebApp.Services
 {
-    public class BaseService<Model> : IBaseService<Model> where Model : ModelBase
+    public abstract class BaseService<Model> : IBaseService<Model> where Model : ModelBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _baseUrl;

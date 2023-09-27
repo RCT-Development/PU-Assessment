@@ -21,17 +21,6 @@ namespace PU.WebApi
 
             builder.Services.AddCustomAutomapperConfiguration();
 
-            // Allow localhost CORS for assessment purposes
-            builder.Services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins("http://localhost:4200")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                });
-            });
-
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             builder.Services.AddTransient(

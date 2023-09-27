@@ -7,7 +7,7 @@ using PU.DataAccess.Entities;
 
 namespace PU.DataAccess.Repositories
 {
-    public class RepositoryBase<Model, Entity> : IRepository<Model>
+    public abstract class RepositoryBase<Model, Entity> : IRepository<Model>
         where Model : ModelBase
         where Entity : EntityBase
     {

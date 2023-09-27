@@ -14,7 +14,6 @@ namespace PU.DataAccess.Entities
         [Required]
         public string ContactNumber { get; set; }
 
-        //Navigation Properties
-        public ICollection<UserGroup> UserGroups { get; set; }
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
     }
 }

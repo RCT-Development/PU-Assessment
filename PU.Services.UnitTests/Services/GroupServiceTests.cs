@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using AutoFixture;
+using Moq;
 using PU.Core.DTO.Response;
 using PU.Core.Exceptions;
 using PU.Core.Models;
@@ -11,18 +12,20 @@ namespace PU.Services.UnitTests.Services
     {
         private GroupService _sut;
         private Mock<IGroupRepository> _groupRepositoryMock;
+        private Fixture _fixture;
 
         [SetUp]
         public void Setup()
         {
             _groupRepositoryMock = new Mock<IGroupRepository>();
             _sut = new GroupService(_groupRepositoryMock.Object);
+            _fixture = new Fixture();
         }
 
         [Test]
         public async Task CreateGroup_ValidInput_CallsRepositoryCreateAsync()
         {
-            var group = new Group();
+            var group = _fixture.Create<Group>();
 
             await _sut.CreateAsync(group);
 
@@ -33,7 +36,7 @@ namespace PU.Services.UnitTests.Services
         public async Task DeleteGroup_ExistingGroup_CallsRepositoryDeleteAsync()
         {
             var groupId = Guid.NewGuid();
-            var existingGroup = new Group();
+            var existingGroup = _fixture.Create<Group>();
             _groupRepositoryMock.Setup(repo => repo.GetAsync(groupId)).ReturnsAsync(existingGroup);
 
             await _sut.DeleteAsync(groupId);
@@ -54,7 +57,7 @@ namespace PU.Services.UnitTests.Services
         public async Task GetGroup_ReturnsGroup()
         {
             var groupId = Guid.NewGuid();
-            var group = new Group { Id = groupId };
+            var group = _fixture.Build<Group>().With(x => x.Id, groupId).Create();
             _groupRepositoryMock.Setup(repo => repo.GetAsync(groupId)).ReturnsAsync(group);
 
             var result = await _sut.GetAsync(groupId);
@@ -65,33 +68,29 @@ namespace PU.Services.UnitTests.Services
         [Test]
         public async Task GetGroups_ReturnsListOfGroups()
         {
-            var groups = new List<Group> { new Group(), new Group() };
+            var groups = _fixture.CreateMany<Group>();
             _groupRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(groups);
 
             var result = await _sut.GetAllAsync();
 
-            Assert.That(result.Count(), Is.EqualTo(groups.Count));
+            Assert.That(result.Count(), Is.EqualTo(groups.Count()));
         }
 
         [Test]
         public async Task GetUserCountPerGroup_ReturnsUserCounts()
         {
-            var userCounts = new List<GroupUserCount>
-            {
-                new GroupUserCount { GroupName = string.Empty, UserCount = 3 },
-                new GroupUserCount { GroupName = string.Empty, UserCount = 5 },
-            };
+            var userCounts = _fixture.CreateMany<GroupUserCount>();
             _groupRepositoryMock.Setup(repo => repo.GetUserCountPerGroup()).ReturnsAsync(userCounts);
 
             var result = await _sut.GetUserCountPerGroup();
 
-            Assert.That(result.Count(), Is.EqualTo(userCounts.Count));
+            Assert.That(result.Count(), Is.EqualTo(userCounts.Count()));
         }
 
         [Test]
         public async Task UpdateGroup_CallsRepositoryUpdateAsync()
         {
-            var group = new Group();
+            var group = _fixture.Create<Group>();
 
             await _sut.UpdateGroup(group);
 
@@ -102,12 +101,12 @@ namespace PU.Services.UnitTests.Services
         public async Task GetGroupUsers_ReturnsUsers()
         {
             var groupId = Guid.NewGuid();
-            var users = new List<User> { new User(), new User() };
+            var users = _fixture.CreateMany<User>();
             _groupRepositoryMock.Setup(repo => repo.GetGroupUsers(groupId)).ReturnsAsync(users);
 
             var result = await _sut.GetGroupUsersAsync(groupId);
 
-            Assert.That(result.Count(), Is.EqualTo(users.Count));
+            Assert.That(result.Count(), Is.EqualTo(users.Count()));
         }
 
         [Test]
@@ -137,14 +136,14 @@ namespace PU.Services.UnitTests.Services
         {
             // Arrange
             var groupId = Guid.NewGuid();
-            var permissions = new List<Permission> { new Permission(), new Permission() };
+            var permissions = _fixture.CreateMany<Permission>();
             _groupRepositoryMock.Setup(repo => repo.GetGroupPermissions(groupId)).ReturnsAsync(permissions);
 
             // Act
             var result = await _sut.GetGroupPermissionsAsync(groupId);
 
             // Assert
-            Assert.That(result.Count(), Is.EqualTo(permissions.Count));
+            Assert.That(result.Count(), Is.EqualTo(permissions.Count()));
         }
 
         [Test]
